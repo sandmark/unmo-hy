@@ -1,9 +1,9 @@
-(import [unmo.responders [Responder]])
+(import [unmo.responders [RandomResponder]])
 
 (defclass Bot []
   (defn __init__ [self name]
     (setv self._name name)
-    (setv self._responder (Responder 'What)))
+    (setv self._responder (RandomResponder "Random")))
 
   (defn dialogue [self text]
     (.response self._responder text))

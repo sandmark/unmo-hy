@@ -8,4 +8,6 @@
 
 (defn test-prompt [unmo]
   (assert (= (prompt unmo)
-             "test:What> ")))
+             (.format "{name}:{responder}> "
+                      :name unmo.name
+                      :responder unmo.responder-name))))
