@@ -1,10 +1,10 @@
 (import [unmo.main [prompt]]
-        [unmo.bot [Unmo]]
+        [unmo.bot [Bot]]
         pytest)
 
 (with-decorator (pytest.fixture)
   (defn unmo []
-    (Unmo 'test)))
+    (Bot 'test)))
 
 (defn test-prompt [unmo]
   (assert (= (prompt unmo)

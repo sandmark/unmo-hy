@@ -1,4 +1,4 @@
-(import [unmo.bot [Unmo]])
+(import [unmo.bot [Bot]])
 
 (defn prompt [unmo]
   (.format "{name}:{responder}> "
@@ -7,7 +7,7 @@
 
 (defmain [args]
   (print "Unmo System prototype : proto")
-  (setv proto (Unmo 'proto))
+  (setv proto (Bot 'proto))
   (while True
     (setv text (input "> "))
     (when (not text)

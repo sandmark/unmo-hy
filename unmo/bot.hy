@@ -1,6 +1,6 @@
 (import [unmo.responders [Responder]])
 
-(defclass Unmo []
+(defclass Bot []
   (defn __init__ [self name]
     (setv self._name name)
     (setv self._responder (Responder 'What)))
