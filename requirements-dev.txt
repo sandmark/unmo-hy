@@ -1,0 +1,16 @@
+appdirs==1.4.3
+args==0.1.0
+astor==0.7.1
+atomicwrites==1.2.1
+attrs==18.2.0
+clint==0.5.1
+funcparserlib==0.3.6
+hy==0.15.0
+hytest==0.0.1
+lice==0.5
+more-itertools==4.3.0
+pluggy==0.8.0
+py==1.7.0
+pytest==3.9.1
+rply==0.7.6
+six==1.11.0

@@ -1,0 +1,18 @@
+* 人工無脳 Unmo
+
+Unmo は [[http://docs.hylang.org/en/stable/][Hy]] で書かれたチャットボット（人工無脳と呼ばれることもあるプログラム）です。
+形態素解析・マルコフ連鎖などに基づいたアルゴリズムにより、ユーザーの入力を学習・成長していきます。
+
+Pure Python で書かれたオリジナルの Unmo に関しては [[https://github.com/sandmark/unmo/releases][https://github.com/sandmark/unmo/releases]]
+を参照してください。
+
+またこのプログラムは Ruby 向けの書籍『[[http://amzn.to/2kYltNz][恋するプログラム]]』で解説されているチャットボットであり、
+このリポジトリは勉強を兼ねて Hy に移植したものです。
+
+** 動作確認
+このプログラムは以下のバージョンで開発されています。
+- [[https://www.python.org/downloads/][Python]] 3.6.6
+- [[http://docs.hylang.org/en/stable/][Hy]] 0.15.0
+
+** 謝辞
+『[[http://amzn.to/2kYltNz][恋するプログラム]]』の著者、秋山智俊さん。

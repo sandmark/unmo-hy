@@ -1,0 +1,7 @@
+appdirs==1.4.3
+args==0.1.0
+astor==0.7.1
+clint==0.5.1
+funcparserlib==0.3.6
+hy==0.15.0
+rply==0.7.6
