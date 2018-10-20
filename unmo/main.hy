@@ -23,3 +23,8 @@
   (with-decorator property
     (defn responder-name [self]
       self._responder.name)))
+
+(defn prompt [unmo]
+  (.format "{name}:{responder}> "
+           :name unmo.name
+           :responder unmo.responder-name))
