@@ -1,4 +1,4 @@
-(import [unmo.main [Unmo]]
+(import [unmo.bot [Unmo]]
         pytest)
 
 (with-decorator (pytest.fixture)

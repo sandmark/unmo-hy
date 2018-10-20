@@ -1,4 +1,4 @@
-(import [unmo.main [Responder]]
+(import [unmo.responders [Responder]]
         pytest)
 
 (with-decorator (pytest.fixture)

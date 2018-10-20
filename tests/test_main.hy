@@ -1,4 +1,5 @@
-(import [unmo.main [Unmo prompt]]
+(import [unmo.main [prompt]]
+        [unmo.bot [Unmo]]
         pytest)
 
 (with-decorator (pytest.fixture)
