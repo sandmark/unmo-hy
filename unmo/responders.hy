@@ -1,14 +1,14 @@
 (import [random [choice]])
+(require [unmo.utils [*]])
 
 (defclass Responder []
+  (property name self._name)
+
   (defn --init-- [self name]
     (setv self._name name))
 
   (defn response [self &rest args]
-    (raise NotImplementedError))
-
-  (with-decorator property
-    (defn name [self] self._name)))
+    (raise NotImplementedError)))
 
 (defclass WhatResponder [Responder]
   (defn response [self text]
