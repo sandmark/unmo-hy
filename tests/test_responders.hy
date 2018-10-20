@@ -1,5 +1,10 @@
-(import [unmo.responders [WhatResponder RandomResponder]]
+(import [unmo.responders [Responder WhatResponder RandomResponder]]
         pytest)
+
+(defclass Responder []
+  (defn test-response-raises [self]
+    (with (pytest.raises NotImplementedError)
+      (.response (Responder 'test) "test"))))
 
 (with-decorator (pytest.fixture)
   (defn what []
