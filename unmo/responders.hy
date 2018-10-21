@@ -4,8 +4,9 @@
 (defclass Responder []
   (property name self._name)
 
-  (defn --init-- [self name]
-    (setv self._name name))
+  (defn --init-- [self name dictionary]
+    (setv self._name name
+          self._dictionary dictionary))
 
   (defn response [self &rest args]
     (raise NotImplementedError)))
@@ -15,7 +16,11 @@
     (-> "{text}ってなに？" (.format :text text))))
 
 (defclass RandomResponder [Responder]
-  [responses ["今日はさむいね" "チョコたべたい" "きのう10円ひろった"]]
+  (property responses self._dictionary.random)
 
   (defn response [self &rest args]
-    (choice self.responses)))
+    (try
+      (choice self.responses)
+      (except [e IndexError]
+        "警告: ランダム辞書が空です。"))))
+

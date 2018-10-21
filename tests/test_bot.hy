@@ -1,9 +1,6 @@
-(import [unmo.bot [Bot]]
-        pytest)
-
-(with-decorator (pytest.fixture)
-  (defn unmo []
-    (Bot 'test)))
+(import pytest
+        [unmo.bot [Bot]]
+        [fixtures [*]])
 
 (defclass TestBot []
   (defn test-unmo-property-name [self unmo]

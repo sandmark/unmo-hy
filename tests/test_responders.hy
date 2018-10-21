@@ -1,5 +1,6 @@
-(import [unmo.responders [Responder WhatResponder RandomResponder]]
-        pytest)
+(import pytest
+        [unmo.responders [Responder WhatResponder RandomResponder]]
+        [fixtures [*]])
 
 (defclass Responder []
   (defn test-response-raises [self]
@@ -7,8 +8,8 @@
       (.response (Responder 'test) "test"))))
 
 (with-decorator (pytest.fixture)
-  (defn what []
-    (WhatResponder 'test)))
+  (defn what [testdic]
+    (WhatResponder 'test testdic)))
 
 (defclass TestWhatResponder []
   (defn test-property-name [self what]
@@ -19,14 +20,13 @@
     (assert (= (.response what text) "テストってなに？"))))
 
 (with-decorator (pytest.fixture)
-  (defn random []
-    (RandomResponder 'random)))
+  (defn random [testdic]
+    (RandomResponder 'random testdic)))
 
 (defclass TestRandomResponder []
   (defn test-property-name [self random]
     (assert (= random.name 'random)))
 
-  (defn test-response-randomly [self random]
-    (setv responses RandomResponder.responses)
+  (defn test-response-randomly [self random testdic]
     (assert (in (.response random "test")
-                responses))))
+                testdic.random))))
