@@ -3,7 +3,11 @@
         [unmo.bot [Bot]]
         [unmo.dictionary [Dictionary]])
 
-(setv *TEST-RANDOM* ["aaa" "bbb" "ccc"])
+(setv *TEST-RANDOM* ["aaa" "bbb" "ccc"]
+      *TEST-PATTERN* [{"pattern" "チョコ(レート)?"
+                       "phrases" ["%match%おいしいよね"]}
+                      {"pattern" "こんにちは"
+                       "phrases" ["おはよう" "こんにちは" "こんばんは"]}])
 
 (with-decorator (pytest.fixture)
   (defn testdic-nofile []
@@ -15,7 +19,8 @@
     (.mkdir d)
     (setv p (/ d "testdic.json"))
 
-    (setv data {"random" *TEST-RANDOM*})
+    (setv data {"random" *TEST-RANDOM*
+                "pattern" *TEST-PATTERN*})
     (with [f (open p 'w)]
       (json.dump data f))
     (Dictionary p)))

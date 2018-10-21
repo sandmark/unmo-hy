@@ -11,4 +11,10 @@
     (assert (= (len testdic.random)
                (len *TEST-RANDOM*)))
     (for [text testdic.random]
-      (assert (in text *TEST-RANDOM*)))))
+      (assert (in text *TEST-RANDOM*))))
+
+  (defn test-pattern-without-dict-file [self testdic-nofile]
+    (assert (= testdic-nofile.pattern [{}])))
+
+  (defn test-pattern [self testdic]
+    (assert (= testdic.pattern *TEST-PATTERN*))))
