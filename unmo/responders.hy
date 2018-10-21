@@ -2,7 +2,7 @@
 (require [unmo.utils [*]])
 
 (defclass Responder []
-  (property name self._name)
+  (prop name self._name)
 
   (defn --init-- [self name dictionary]
     (setv self._name name
@@ -16,7 +16,7 @@
     (-> "{text}ってなに？" (.format :text text))))
 
 (defclass RandomResponder [Responder]
-  (property responses self._dictionary.random)
+  (prop responses self._dictionary.random)
 
   (defn response [self &rest args]
     (try

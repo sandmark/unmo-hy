@@ -4,9 +4,9 @@
 (defclass Dictionary []
   [dicfile "dic/dict.json"]
 
-  (property random self._random)
-  (property pattern self._pattern)
-  (property dicfile self._dicfile)
+  (prop random self._random
+        pattern self._pattern
+        dicfile self._dicfile)
 
   (defn --init-- [self &optional [dicfile dicfile]]
     (setv self._dicfile dicfile)

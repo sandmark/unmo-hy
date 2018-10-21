@@ -5,8 +5,8 @@
 (require [unmo.utils [*]])
 
 (defclass Bot []
-  (property name self._name)
-  (property responder-name self._responder.name)
+  (prop name self._name
+        responder-name self._responder.name)
 
   (defn __init__ [self name &optional [dicfile Dictionary.dicfile]]
     (setv self._dictionary (Dictionary dicfile)
