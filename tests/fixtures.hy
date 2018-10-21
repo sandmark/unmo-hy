@@ -3,7 +3,7 @@
         [unmo.bot [Bot]]
         [unmo.dictionary [Dictionary]])
 
-(setv TEST_RANDOM ["aaa" "bbb" "ccc"])
+(setv *TEST-RANDOM* ["aaa" "bbb" "ccc"])
 
 (with-decorator (pytest.fixture)
   (defn testdic-nofile []
@@ -15,7 +15,7 @@
     (.mkdir d)
     (setv p (/ d "testdic.json"))
 
-    (setv data {"random" TEST_RANDOM})
+    (setv data {"random" *TEST-RANDOM*})
     (with [f (open p 'w)]
       (json.dump data f))
     (Dictionary p)))

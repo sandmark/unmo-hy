@@ -9,6 +9,6 @@
   (defn test-random [self testdic]
     (assert (not (empty? testdic.random)))
     (assert (= (len testdic.random)
-               (len TEST_RANDOM)))
+               (len *TEST-RANDOM*)))
     (for [text testdic.random]
-      (assert (in text TEST_RANDOM)))))
+      (assert (in text *TEST-RANDOM*)))))
