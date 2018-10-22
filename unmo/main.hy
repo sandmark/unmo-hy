@@ -1,4 +1,5 @@
-(import [unmo.bot [Bot]])
+(import [unmo.bot [Bot]]
+        [unmo.exceptions [BotDictionaryLoadError]])
 
 (defn prompt [unmo]
   (.format "{name}:{responder}> "
@@ -7,7 +8,13 @@
 
 (defmain [args]
   (print "Unmo System prototype : proto")
-  (setv proto (Bot 'proto))
+  (try
+    (setv proto (Bot 'proto))
+    (except [e BotDictionaryLoadError]
+      (-> "警告: 辞書ファイル '{}' の読み込みに失敗しました。空の辞書を使用します。"
+          (.format e.dictionary-file)
+          (print))
+      (setv proto e.bot-instance)))
   (while True
     (setv text (input "> "))
     (when (not text)
