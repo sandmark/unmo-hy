@@ -1,6 +1,8 @@
 (import pytest
         json
         [unmo.bot [Bot]]
+        [unmo.responders [WhatResponder
+                          RandomResponder]]
         [unmo.dictionary [Dictionary]])
 
 (setv *TEST-RANDOM* ["aaa" "bbb" "ccc"]
@@ -28,3 +30,11 @@
 (with-decorator (pytest.fixture)
   (defn unmo [testdic]
     (Bot 'test testdic.dicfile)))
+
+(with-decorator (pytest.fixture)
+  (defn what [testdic]
+    (WhatResponder 'test testdic)))
+
+(with-decorator (pytest.fixture)
+  (defn random [testdic]
+    (RandomResponder 'random testdic)))
