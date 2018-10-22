@@ -14,7 +14,7 @@
       (setv self._dictionary (Dictionary (if dicfile dicfile Dictionary.default-dicfile)))
       (except [e DictionaryNotFound]
         (setv self._dictionary e.dictionary-instance)
-        (raise (BotDictionaryLoadError self e)))
+        (raise (BotDictionaryLoadError e.dictionary-file self e)))
       (finally
         (setv self._name name
               self._responders {:what   (WhatResponder   'What   self._dictionary)
