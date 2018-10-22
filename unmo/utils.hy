@@ -1,3 +1,9 @@
+(defmacro ap-when [condition &rest body]
+  (require [hy.extra.anaphoric [ap-if]])
+  `(ap-if ~condition
+     (do ~@body)
+     '()))
+
 (defmacro let [values &rest body]
   (setv var-names (list (map first  values))
         var-vals  (list (map second values)))
