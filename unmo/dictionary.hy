@@ -3,13 +3,13 @@
 (require [unmo.utils [*]])
 
 (defclass Dictionary []
-  [dicfile "dic/dict.json"]
+  [default-dicfile "dic/dict.json"]
 
   (prop random self._random
         pattern self._pattern
         dicfile self._dicfile)
 
-  (defn --init-- [self &optional [dicfile dicfile]]
+  (defn --init-- [self &optional [dicfile default-dicfile]]
     (setv self._dicfile dicfile)
     (try
       (with [f (open dicfile)]
