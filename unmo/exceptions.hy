@@ -1,3 +1,3 @@
 (defclass DictionaryError [Exception])
-(defclass DictionaryFileNotFound [DictionaryError])
+(defclass DictionaryNotFound [DictionaryError])
 (defclass DictionaryEmpty [DictionaryError])
