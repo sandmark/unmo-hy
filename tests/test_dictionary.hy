@@ -1,8 +1,13 @@
 (import pytest
         [unmo.dictionary [Dictionary]]
+        [unmo.exceptions [DictionaryNotFound]]
         [fixtures [*]])
 
 (defclass TestDictionary []
+  (defn test-raises-dictionary-file-not-found [self]
+    (with [(pytest.raises DictionaryNotFound)]
+      (Dictionary "file-not-exists")))
+
   (defn test-random-without-dict-file [self testdic-nofile]
     (assert (empty? testdic-nofile.random)))
 

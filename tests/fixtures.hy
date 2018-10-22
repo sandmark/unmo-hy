@@ -4,7 +4,8 @@
         [unmo.responders [WhatResponder
                           RandomResponder
                           PatternResponder]]
-        [unmo.dictionary [Dictionary]])
+        [unmo.dictionary [Dictionary]]
+        [unmo.exceptions [DictionaryNotFound]])
 
 (setv *TEST-RANDOM* ["aaa" "bbb" "ccc"]
       *TEST-PATTERN* {"チョコ(レート)?" ["%match%おいしいよね"]
@@ -12,7 +13,10 @@
 
 (with-decorator (pytest.fixture)
   (defn testdic-nofile []
-    (Dictionary "with-no-dict-file")))
+    (try
+      (Dictionary "with-no-dict-file")
+      (except [e DictionaryNotFound]
+        e.dictionary-instance))))
 
 (with-decorator (pytest.fixture)
   (defn testdic [tmp-path]

@@ -1,4 +1,5 @@
-(import json)
+(import json
+        [unmo.exceptions [DictionaryNotFound]])
 (require [unmo.utils [*]])
 
 (defclass Dictionary []
@@ -14,8 +15,9 @@
       (with [f (open dicfile)]
         (setv data (json.load f)))
       (except [e FileNotFoundError]
-        (-> "警告: 辞書ファイル '{}' の読み込みに失敗しました。" (.format dicfile) (print))
         (setv data {"random" []
-                    "pattern" {}})))
-    (setv self._random (get data "random"))
-    (setv self._pattern (get data "pattern"))))
+                    "pattern" {}})
+        (raise (DictionaryNotFound dicfile self e)))
+      (finally
+        (setv self._random (get data "random"))
+        (setv self._pattern (get data "pattern"))))))
