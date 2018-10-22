@@ -8,8 +8,8 @@
   (prop name self._name
         responder-name self._responder.name)
 
-  (defn __init__ [self name &optional [dicfile Dictionary.dicfile]]
-    (setv self._dictionary (Dictionary dicfile)
+  (defn --init-- [self name &optional dicfile]
+    (setv self._dictionary (Dictionary (if dicfile dicfile Dictionary.default-dicfile))
           self._name name
           self._responders {:what   (WhatResponder   'What   self._dictionary)
                             :random (RandomResponder 'Random self._dictionary)}

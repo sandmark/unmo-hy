@@ -9,15 +9,15 @@
         pattern self._pattern
         dicfile self._dicfile)
 
-  (defn --init-- [self &optional [dicfile default-dicfile]]
-    (setv self._dicfile dicfile)
+  (defn --init-- [self &optional filename]
+    (setv self._dicfile (if filename filename Dictionary.default-dicfile))
     (try
-      (with [f (open dicfile)]
+      (with [f (open self._dicfile)]
         (setv data (json.load f)))
       (except [e FileNotFoundError]
         (setv data {"random" []
                     "pattern" {}})
-        (raise (DictionaryNotFound dicfile self e)))
+        (raise (DictionaryNotFound self._dicfile self e)))
       (finally
         (setv self._random (get data "random"))
         (setv self._pattern (get data "pattern"))))))
