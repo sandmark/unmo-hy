@@ -4,7 +4,7 @@
 
 (defclass Responder []
   (defn test-response-raises [self]
-    (with (pytest.raises NotImplementedError)
+    (with [(pytest.raises NotImplementedError)]
       (.response (Responder 'test) "test"))))
 
 (defclass TestWhatResponder []
