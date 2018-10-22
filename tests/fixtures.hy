@@ -2,14 +2,13 @@
         json
         [unmo.bot [Bot]]
         [unmo.responders [WhatResponder
-                          RandomResponder]]
+                          RandomResponder
+                          PatternResponder]]
         [unmo.dictionary [Dictionary]])
 
 (setv *TEST-RANDOM* ["aaa" "bbb" "ccc"]
-      *TEST-PATTERN* [{"pattern" "チョコ(レート)?"
-                       "phrases" ["%match%おいしいよね"]}
-                      {"pattern" "こんにちは"
-                       "phrases" ["おはよう" "こんにちは" "こんばんは"]}])
+      *TEST-PATTERN* {"チョコ(レート)?" ["%match%おいしいよね"]
+                      "こんにちは" ["おはよう" "こんにちは" "こんばんは"]})
 
 (with-decorator (pytest.fixture)
   (defn testdic-nofile []
@@ -38,3 +37,7 @@
 (with-decorator (pytest.fixture)
   (defn random [testdic]
     (RandomResponder 'random testdic)))
+
+(with-decorator (pytest.fixture)
+  (defn pattern [testdic]
+    (PatternResponder 'pattern testdic)))

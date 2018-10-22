@@ -16,6 +16,6 @@
       (except [e FileNotFoundError]
         (-> "警告: 辞書ファイル '{}' の読み込みに失敗しました。" (.format dicfile) (print))
         (setv data {"random" []
-                    "pattern" [{}]})))
+                    "pattern" {}})))
     (setv self._random (get data "random"))
     (setv self._pattern (get data "pattern"))))

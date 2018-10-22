@@ -22,3 +22,13 @@
   (defn test-response-randomly [self random testdic]
     (assert (in (.response random "test")
                 testdic.random))))
+
+(defclass TestPatternResponder []
+  (defn test-response-match [self pattern]
+    (assert (= (.response pattern "テストチョコテスト") "チョコおいしいよね"))
+    (assert (= (.response pattern "テストチョコレートテスト")
+               "チョコレートおいしいよね")))
+
+  (defn test-response-multiple [self pattern testdic]
+    (assert (in (.response pattern "テストこんにちはテスト")
+                (get *TEST-PATTERN* "こんにちは")))))

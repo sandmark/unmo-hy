@@ -1,4 +1,5 @@
-(import [random [choice]])
+(import [random [choice]]
+        re)
 (require [unmo.utils [*]])
 
 (defclass Responder []
@@ -24,3 +25,9 @@
       (except [e IndexError]
         "警告: ランダム辞書が空です。"))))
 
+(defclass PatternResponder [Responder]
+  (defn response [self text]
+    (for-with-result [result (choice self._dictionary.random)]
+                     [(, ptn responses) (.items self._dictionary.pattern)]
+      (ap-when (re.search ptn text)
+        (setv result (-> (choice responses) (.replace "%match%" (.group it 0))))))))
