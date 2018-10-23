@@ -44,4 +44,9 @@
 
   (defn test-response-multiple [self pattern testdic]
     (assert (in (.response pattern "テストこんにちはテスト")
-                (get *TEST-PATTERN* "こんにちは")))))
+                (get *TEST-PATTERN* "こんにちは"))))
+
+  (defn test-response-with-re-literals [self pattern testdic]
+    (setv invalid-pattern "(")
+    (.learn testdic invalid-pattern)
+    (assert (= (.response pattern invalid-pattern) invalid-pattern))))

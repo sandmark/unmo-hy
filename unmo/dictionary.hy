@@ -2,7 +2,7 @@
         json
         [pathlib [PurePath]]
         [unmo.exceptions [DictionaryNotFound]]
-        [unmo.morph [analyze noun?]])
+        [unmo.morph [*]])
 (require [unmo.utils [*]])
 
 (defclass Dictionary []
@@ -36,6 +36,7 @@
   (defn learn-pattern [self text parts]
     (for [(, word part) parts]
       (when (noun? word part)
+        (setv word (re-escape word))
         (if (in word self.pattern)
           (-> (get self.pattern word) (.append text))
           (assoc self._pattern word [text])))))

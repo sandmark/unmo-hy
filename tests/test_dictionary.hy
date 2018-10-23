@@ -1,4 +1,5 @@
 (import os
+        re
         pytest
         [unmo.dictionary [Dictionary]]
         [unmo.exceptions [DictionaryNotFound]]
@@ -67,4 +68,10 @@
     (.learn-pattern testdic-nofile janome-text-1 (analyze janome-text-1))
     (.learn-pattern testdic-nofile janome-text-2 (analyze janome-text-2))
     (for [noun janome-nouns-2]
-      (assert (= (get testdic-nofile.pattern noun) [janome-text-1 janome-text-2])))))
+      (assert (= (get testdic-nofile.pattern noun) [janome-text-1 janome-text-2]))))
+
+  (defn test-pattern-learn-escape-re-literals [self testdic-nofile]
+    (setv text "(")
+    (.learn-pattern testdic-nofile text (analyze text))
+    (assert (= (-> testdic-nofile.pattern (.keys) (list) (first))
+               (re.escape text)))))
