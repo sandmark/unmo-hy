@@ -3,7 +3,9 @@
                           RandomResponder
                           PatternResponder]]
         [unmo.dictionary [Dictionary]]
-        [unmo.exceptions [DictionaryNotFound BotDictionaryLoadError]])
+        [unmo.exceptions [DictionaryError
+                          DictionaryNotFound
+                          BotDictionaryLoadError]])
 (require [unmo.utils [*]])
 
 (defclass Bot []
@@ -29,4 +31,12 @@
           [(in chance (range 60 89)) (setv self._responder (get self._responders :random))]
           [True                      (setv self._responder (get self._responders :what))])
 
-    (setv response (.response self._responder text))))
+    (try
+      (setv response (.response self._responder text))
+      (except [] (raise))
+      (finally
+        (.learn self._dictionary text)))
+    response)
+
+  (defn save [self]
+    (self._dictionary.save)))

@@ -12,6 +12,12 @@
                       "こんにちは" ["おはよう" "こんにちは" "こんばんは"]})
 
 (with-decorator (pytest.fixture)
+  (defn tmp-dicfile [tmp-path]
+    (setv directory (/ tmp-path "unmo"))
+    (.mkdir directory)
+    (/ directory "tmpdic.json")))
+
+(with-decorator (pytest.fixture)
   (defn testdic-nofile []
     (try
       (Dictionary "with-no-dict-file")
@@ -26,8 +32,8 @@
 
     (setv data {"random" *TEST-RANDOM*
                 "pattern" *TEST-PATTERN*})
-    (with [f (open p 'w)]
-      (json.dump data f))
+    (with [f (open p 'w :encoding 'utf-8)]
+      (json.dump data f :ensure-ascii False :indent 2))
     (Dictionary p)))
 
 (with-decorator (pytest.fixture)

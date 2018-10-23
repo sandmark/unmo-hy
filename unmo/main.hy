@@ -27,4 +27,5 @@
                    :response response)
           (print))
       (except [e DictionaryEmpty]
-        (-> "警告: {}" (.format e.message) print)))))
+        (-> "警告: {}" (.format e.message) print))))
+  (.save proto))
