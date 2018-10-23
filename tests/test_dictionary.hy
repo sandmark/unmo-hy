@@ -18,6 +18,14 @@
     (for [text testdic.random]
       (assert (in text *TEST-RANDOM*))))
 
+  (defn test-random-learn [self testdic-nofile]
+    (assert (empty? testdic-nofile.random))
+    (setv text "Hi, chatbot.")
+    (.learn testdic-nofile text)
+    (assert (in text testdic-nofile.random))
+    (.learn testdic-nofile text)
+    (assert (len testdic-nofile.random) 1))
+
   (defn test-pattern-without-dict-file [self testdic-nofile]
     (assert (= testdic-nofile.pattern {})))
 

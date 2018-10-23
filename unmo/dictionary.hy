@@ -20,4 +20,8 @@
         (raise (DictionaryNotFound self._dicfile self e)))
       (finally
         (setv self._random (get data "random"))
-        (setv self._pattern (get data "pattern"))))))
+        (setv self._pattern (get data "pattern")))))
+
+  (defn learn [self text]
+    (unless (in text self._random)
+      (.append self._random text))))
