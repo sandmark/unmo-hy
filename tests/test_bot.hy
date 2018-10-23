@@ -7,9 +7,9 @@
         [fixtures [*]])
 
 (defclass TestBot []
-  (defn test-unmo-alerts-without-dictionary [self]
+  (defn test-unmo-alerts-without-dictionary [self testdic-nofile]
     (with [e (pytest.raises BotDictionaryLoadError)]
-      (assert (Bot 'test))))
+      (assert (Bot 'test testdic-nofile.dicfile))))
 
   (defn test-unmo-save [self unmo]
     (setv filesize (os.path.getsize unmo._dictionary.dicfile))
@@ -24,9 +24,9 @@
     (assert (= (len unmo._dictionary.random) expected-length))
     (assert (in text unmo._dictionary.random)))
 
-  (defn test-unmo-dialogue-without-dictionary [self]
+  (defn test-unmo-dialogue-without-dictionary [self testdic-nofile]
     (try
-      (setv bot (Bot 'test))
+      (setv bot (Bot 'test testdic-nofile.dicfile))
       (except [e BotDictionaryLoadError]
         (setv bot e.bot-instance)))
     (with [e (pytest.raises DictionaryEmpty)]
