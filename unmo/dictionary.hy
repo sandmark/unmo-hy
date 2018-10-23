@@ -1,4 +1,6 @@
-(import json
+(import os
+        json
+        [pathlib [PurePath]]
         [unmo.exceptions [DictionaryNotFound]])
 (require [unmo.utils [*]])
 
@@ -29,5 +31,9 @@
   (defn save [self]
     (setv data {"random"  self.random
                 "pattern" self.pattern})
+    (unless (os.path.exists self.dicfile)
+      (setv path (PurePath self.dicfile))
+      (setv directory path.parent)
+      (os.makedirs directory :exist-ok True))
     (with [f (open self.dicfile 'w)]
       (json.dump data f))))

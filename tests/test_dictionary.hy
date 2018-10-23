@@ -1,9 +1,19 @@
-(import pytest
+(import os
+        pytest
         [unmo.dictionary [Dictionary]]
         [unmo.exceptions [DictionaryNotFound]]
         [fixtures [*]])
 
 (defclass TestDictionary []
+  (defn test-save-make-dirs [self tmp-path]
+    (setv dicfile (/ tmp-path "unmo" "file.json"))
+    (try
+      (setv dictionary (Dictionary dicfile))
+      (except [e DictionaryNotFound]
+        (setv dictionary e.dictionary-instance)))
+    (.save dictionary)
+    (assert (os.path.exists dicfile)))
+
   (defn test-save [self testdic-nofile tmp-dicfile]
     (try
       (setv dictionary (Dictionary tmp-dicfile))
