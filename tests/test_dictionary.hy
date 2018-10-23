@@ -47,7 +47,7 @@
     (.learn-random testdic-nofile text)
     (assert (in text testdic-nofile.random))
     (.learn-random testdic-nofile text)
-    (assert (len testdic-nofile.random) 1))
+    (assert (= (len testdic-nofile.random) 1)))
 
   (defn test-pattern-without-dict-file [self testdic-nofile]
     (assert (= testdic-nofile.pattern {})))
