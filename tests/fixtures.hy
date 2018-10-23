@@ -12,13 +12,13 @@
                       "こんにちは" ["おはよう" "こんにちは" "こんばんは"]})
 
 (with-decorator (pytest.fixture)
-  (defn janome-text [] "あたしは平和なプログラムの女の子です。"))
+  (defn janome-text-1 [] "あたしは平和なプログラムの女の子です。"))
 
 (with-decorator (pytest.fixture)
-  (defn janome-nouns [] ["あたし" "平和" "プログラム" "女の子"]))
+  (defn janome-nouns-1 [] ["あたし" "平和" "プログラム" "女の子"]))
 
 (with-decorator (pytest.fixture)
-  (defn janome-tokenized []
+  (defn janome-tokenized-1 []
     [(, "あたし"    "名詞,代名詞,一般,*")
      (, "は"       "助詞,係助詞,*,*")
      (, "平和"     "名詞,形容動詞語幹,*,*")
@@ -30,7 +30,7 @@
      (, "。"       "記号,句点,*,*")]))
 
 (with-decorator (pytest.fixture)
-  (defn janome-nouns-bool []
+  (defn janome-nouns-bool-1 []
     [True False True False True False True False False]))
 
 (with-decorator (pytest.fixture)

@@ -55,8 +55,8 @@
   (defn test-pattern [self testdic]
     (assert (= testdic.pattern *TEST-PATTERN*)))
 
-  (defn test-pattern-learn [self janome-text janome-nouns testdic-nofile]
-    (.learn-pattern testdic-nofile janome-text (analyze janome-text))
-    (assert (= (len testdic-nofile.pattern) (len janome-nouns)))
-    (for [noun janome-nouns]
-      (assert (= (get testdic-nofile.pattern noun) [janome-text])))))
+  (defn test-pattern-learn [self janome-text-1 janome-nouns-1 testdic-nofile]
+    (.learn-pattern testdic-nofile janome-text-1 (analyze janome-text-1))
+    (assert (= (len testdic-nofile.pattern) (len janome-nouns-1)))
+    (for [noun janome-nouns-1]
+      (assert (= (get testdic-nofile.pattern noun) [janome-text-1])))))
