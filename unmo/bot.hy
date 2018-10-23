@@ -31,4 +31,7 @@
 
     (setv response (.response self._responder text))
     (.learn self._dictionary text)
-    response))
+    response)
+
+  (defn save [self]
+    (self._dictionary.save)))

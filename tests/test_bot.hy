@@ -1,4 +1,5 @@
-(import pytest
+(import os
+        pytest
         [unmo.bot [Bot]]
         [unmo.exceptions [DictionaryNotFound
                           DictionaryEmpty
@@ -9,6 +10,12 @@
   (defn test-unmo-alerts-without-dictionary [self]
     (with [e (pytest.raises BotDictionaryLoadError)]
       (assert (Bot 'test))))
+
+  (defn test-unmo-save [self unmo]
+    (setv filesize (os.path.getsize unmo._dictionary.dicfile))
+    (.dialogue unmo "Hi, chatbot!")
+    (.save unmo)
+    (assert (> (os.path.getsize unmo._dictionary.dicfile) filesize)))
 
   (defn test-unmo-learn-when-dialogue [self unmo]
     (setv text "Hi, chatbot!")
