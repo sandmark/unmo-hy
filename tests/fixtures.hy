@@ -32,8 +32,8 @@
 
     (setv data {"random" *TEST-RANDOM*
                 "pattern" *TEST-PATTERN*})
-    (with [f (open p 'w)]
-      (json.dump data f))
+    (with [f (open p 'w :encoding 'utf-8)]
+      (json.dump data f :ensure-ascii False :indent 2))
     (Dictionary p)))
 
 (with-decorator (pytest.fixture)

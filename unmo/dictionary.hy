@@ -14,7 +14,7 @@
   (defn --init-- [self &optional filename]
     (setv self._dicfile (if filename filename Dictionary.default-dicfile))
     (try
-      (with [f (open self._dicfile)]
+      (with [f (open self._dicfile :encoding 'utf-8)]
         (setv data (json.load f)))
       (except [e FileNotFoundError]
         (setv data {"random" []
@@ -35,5 +35,5 @@
       (setv path (PurePath self.dicfile))
       (setv directory path.parent)
       (os.makedirs directory :exist-ok True))
-    (with [f (open self.dicfile 'w)]
-      (json.dump data f))))
+    (with [f (open self.dicfile 'w :encoding 'utf-8)]
+      (json.dump data f :ensure-ascii False :indent 2))))
