@@ -27,7 +27,7 @@
      (, "。"       "記号,句点,*,*")]))
 
 (with-decorator (pytest.fixture)
-  (defn janome-nouns []
+  (defn janome-nouns-bool []
     [True False True False True False True False False]))
 
 (with-decorator (pytest.fixture)
