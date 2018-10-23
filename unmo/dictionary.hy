@@ -24,4 +24,10 @@
 
   (defn learn [self text]
     (unless (in text self._random)
-      (.append self._random text))))
+      (.append self._random text)))
+
+  (defn save [self]
+    (setv data {"random"  self.random
+                "pattern" self.pattern})
+    (with [f (open self.dicfile 'w)]
+      (json.dump data f))))

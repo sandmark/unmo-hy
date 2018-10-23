@@ -4,6 +4,18 @@
         [fixtures [*]])
 
 (defclass TestDictionary []
+  (defn test-save [self testdic-nofile tmp-dicfile]
+    (try
+      (setv dictionary (Dictionary tmp-dicfile))
+      (except [e DictionaryNotFound]
+        (setv dictionary e.dictionary-instance)))
+    (setv text "Hi, chatbot!")
+    (.learn dictionary text)
+    (.save dictionary)
+    (setv dictionary (Dictionary tmp-dicfile))
+    (assert (= (len dictionary.random) 1))
+    (assert (in text dictionary.random)))
+
   (defn test-raises-dictionary-file-not-found [self]
     (with [(pytest.raises DictionaryNotFound)]
       (Dictionary "file-not-exists")))

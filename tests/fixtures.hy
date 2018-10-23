@@ -12,6 +12,12 @@
                       "こんにちは" ["おはよう" "こんにちは" "こんばんは"]})
 
 (with-decorator (pytest.fixture)
+  (defn tmp-dicfile [tmp-path]
+    (setv directory (/ tmp-path "unmo"))
+    (.mkdir directory)
+    (/ directory "tmpdic.json")))
+
+(with-decorator (pytest.fixture)
   (defn testdic-nofile []
     (try
       (Dictionary "with-no-dict-file")
