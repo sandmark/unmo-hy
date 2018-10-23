@@ -11,7 +11,13 @@
     (setv self._dictionary-instance instance)
     (setv self._dictionary-file filename)))
 
-(defclass DictionaryEmpty [DictionaryError])
+(defclass DictionaryEmpty [DictionaryError]
+  (prop message self._message)
+
+  (defn --init-- [self message cause]
+    (.--init-- (super DictionaryEmpty self) (repr cause))
+    (setv self.cause cause)
+    (setv self._message message)))
 
 (defclass BotError [Exception])
 (defclass BotDictionaryLoadError [BotError]

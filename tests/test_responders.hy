@@ -1,5 +1,6 @@
 (import pytest
         [unmo.responders [Responder]]
+        [unmo.exceptions [DictionaryEmpty]]
         [fixtures [*]])
 
 (defclass Responder []
@@ -16,6 +17,12 @@
     (assert (= (.response what text) "テストってなに？"))))
 
 (defclass TestRandomResponder []
+  (defn test-raise-error-without-dictionary [self testdic-nofile]
+    (setv random (RandomResponder 'test testdic-nofile))
+    (with [e (pytest.raises DictionaryEmpty)]
+      (.response random "")
+      (assert (= "ランダム辞書が空です。" e.message))))
+
   (defn test-property-name [self random]
     (assert (= random.name 'random)))
 

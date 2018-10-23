@@ -1,5 +1,6 @@
 (import [random [choice]]
-        re)
+        re
+        [unmo.exceptions [DictionaryEmpty]])
 (require [unmo.utils [*]])
 
 (defclass Responder []
@@ -23,7 +24,7 @@
     (try
       (choice self.responses)
       (except [e IndexError]
-        "警告: ランダム辞書が空です。"))))
+        (raise (DictionaryEmpty "ランダム辞書が空です。" e))))))
 
 (defclass PatternResponder [Responder]
   (defn response [self text]

@@ -1,5 +1,5 @@
 (import [unmo.bot [Bot]]
-        [unmo.exceptions [BotDictionaryLoadError]])
+        [unmo.exceptions [BotDictionaryLoadError DictionaryEmpty]])
 
 (defn prompt [unmo]
   (.format "{name}:{responder}> "
@@ -20,8 +20,11 @@
     (when (not text)
       (break))
 
-    (setv response (.dialogue proto text))
-    (-> (.format "{prompt}{response}"
-                 :prompt (prompt proto)
-                 :response response)
-        (print))))
+    (try
+      (setv response (.dialogue proto text))
+      (-> (.format "{prompt}{response}"
+                   :prompt (prompt proto)
+                   :response response)
+          (print))
+      (except [e DictionaryEmpty]
+        (-> "警告: {}" (.format e.message) print)))))
