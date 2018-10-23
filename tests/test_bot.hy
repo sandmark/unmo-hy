@@ -10,6 +10,13 @@
     (with [e (pytest.raises BotDictionaryLoadError)]
       (assert (Bot 'test))))
 
+  (defn test-unmo-learn-when-dialogue [self unmo]
+    (setv text "Hi, chatbot!")
+    (setv expected-length (inc (len unmo._dictionary.random)))
+    (.dialogue unmo text)
+    (assert (= (len unmo._dictionary.random) expected-length))
+    (assert (in text unmo._dictionary.random)))
+
   (defn test-unmo-dialogue-without-dictionary [self]
     (try
       (setv bot (Bot 'test))

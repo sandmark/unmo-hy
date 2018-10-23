@@ -29,4 +29,6 @@
           [(in chance (range 60 89)) (setv self._responder (get self._responders :random))]
           [True                      (setv self._responder (get self._responders :what))])
 
-    (setv response (.response self._responder text))))
+    (setv response (.response self._responder text))
+    (.learn self._dictionary text)
+    response))
