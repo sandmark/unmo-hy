@@ -1,6 +1,8 @@
 (import pytest
         [unmo.bot [Bot]]
-        [unmo.exceptions [DictionaryNotFound BotDictionaryLoadError]]
+        [unmo.exceptions [DictionaryNotFound
+                          DictionaryEmpty
+                          BotDictionaryLoadError]]
         [fixtures [*]])
 
 (defclass TestBot []
@@ -13,7 +15,9 @@
       (setv bot (Bot 'test))
       (except [e BotDictionaryLoadError]
         (setv bot e.bot-instance)))
-    (assert (.dialogue bot "Hi")))
+    (with [e (pytest.raises DictionaryEmpty)]
+      (.dialogue bot "test")
+      (assert (in "辞書が空です" e.message))))
 
   (defn test-unmo-property-name [self unmo]
     (assert (= unmo.name "test")))
