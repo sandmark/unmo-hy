@@ -28,7 +28,10 @@
 
 (defclass PatternResponder [Responder]
   (defn response [self text]
-    (for-with-result [result (choice self._dictionary.random)]
-                     [(, ptn responses) (.items self._dictionary.pattern)]
-      (ap-when (re.search ptn text)
-        (setv result (-> (choice responses) (.replace "%match%" (.group it 0))))))))
+    (try
+      (for-with-result [result (choice self._dictionary.random)]
+        [(, ptn responses) (.items self._dictionary.pattern)]
+        (ap-when (re.search ptn text)
+          (setv result (-> (choice responses) (.replace "%match%" (.group it 0))))))
+      (except [e IndexError]
+        (raise (DictionaryEmpty "パターン辞書が空です。" e))))))

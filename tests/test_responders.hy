@@ -31,6 +31,12 @@
                 testdic.random))))
 
 (defclass TestPatternResponder []
+  (defn test-raises-with-empty-dictionary [self testdic-nofile]
+    (setv pattern (PatternResponder 'test testdic-nofile))
+    (with [e (pytest.raises DictionaryEmpty)]
+      (.response pattern "")
+      (assert (= "パターン辞書が空です。" e.message))))
+
   (defn test-response-match [self pattern]
     (assert (= (.response pattern "テストチョコテスト") "チョコおいしいよね"))
     (assert (= (.response pattern "テストチョコレートテスト")

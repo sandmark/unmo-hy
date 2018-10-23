@@ -1,6 +1,7 @@
 (import [random [choice]]
         [unmo.responders [WhatResponder
-                          RandomResponder]]
+                          RandomResponder
+                          PatternResponder]]
         [unmo.dictionary [Dictionary]]
         [unmo.exceptions [DictionaryNotFound BotDictionaryLoadError]])
 (require [unmo.utils [*]])
@@ -17,8 +18,9 @@
         (raise (BotDictionaryLoadError e.dictionary-file self e)))
       (finally
         (setv self._name name
-              self._responders {:what   (WhatResponder   'What   self._dictionary)
-                                :random (RandomResponder 'Random self._dictionary)}
+              self._responders {:what   (WhatResponder     'What   self._dictionary)
+                                :random (RandomResponder   'Random self._dictionary)
+                                :pattern (PatternResponder 'Pattern self._dictionary)}
               self._responder (get self._responders :random)))))
 
   (defn dialogue [self text]
