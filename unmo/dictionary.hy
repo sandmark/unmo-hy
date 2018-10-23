@@ -1,7 +1,8 @@
 (import os
         json
         [pathlib [PurePath]]
-        [unmo.exceptions [DictionaryNotFound]])
+        [unmo.exceptions [DictionaryNotFound]]
+        [unmo.morph [analyze noun?]])
 (require [unmo.utils [*]])
 
 (defclass Dictionary []
@@ -25,6 +26,9 @@
         (setv self._pattern (get data "pattern")))))
 
   (defn learn [self text]
+    (self.learn-random text))
+
+  (defn learn-random [self text]
     (unless (in text self._random)
       (.append self._random text)))
 
