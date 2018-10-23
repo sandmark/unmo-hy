@@ -32,6 +32,13 @@
     (unless (in text self._random)
       (.append self._random text)))
 
+  (defn learn-pattern [self text parts]
+    (for [(, word part) parts]
+      (when (noun? word part)
+        (if (in word self.pattern)
+          (-> (get self.pattern word) (.append text))
+          (assoc self._pattern word [text])))))
+
   (defn save [self]
     (setv data {"random"  self.random
                 "pattern" self.pattern})

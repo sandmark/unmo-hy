@@ -2,6 +2,7 @@
         pytest
         [unmo.dictionary [Dictionary]]
         [unmo.exceptions [DictionaryNotFound]]
+        [unmo.morph [analyze]]
         [fixtures [*]])
 
 (defclass TestDictionary []
@@ -52,4 +53,10 @@
     (assert (= testdic-nofile.pattern {})))
 
   (defn test-pattern [self testdic]
-    (assert (= testdic.pattern *TEST-PATTERN*))))
+    (assert (= testdic.pattern *TEST-PATTERN*)))
+
+  (defn test-pattern-learn [self janome-text janome-nouns testdic-nofile]
+    (.learn-pattern testdic-nofile janome-text (analyze janome-text))
+    (assert (= (len testdic-nofile.pattern) (len janome-nouns)))
+    (for [noun janome-nouns]
+      (assert (= (get testdic-nofile.pattern noun) [janome-text])))))

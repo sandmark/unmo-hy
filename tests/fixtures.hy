@@ -15,6 +15,9 @@
   (defn janome-text [] "あたしは平和なプログラムの女の子です。"))
 
 (with-decorator (pytest.fixture)
+  (defn janome-nouns [] ["あたし" "平和" "プログラム" "女の子"]))
+
+(with-decorator (pytest.fixture)
   (defn janome-tokenized []
     [(, "あたし"    "名詞,代名詞,一般,*")
      (, "は"       "助詞,係助詞,*,*")
