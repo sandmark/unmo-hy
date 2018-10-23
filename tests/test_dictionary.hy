@@ -2,6 +2,7 @@
         pytest
         [unmo.dictionary [Dictionary]]
         [unmo.exceptions [DictionaryNotFound]]
+        [unmo.morph [analyze]]
         [fixtures [*]])
 
 (defclass TestDictionary []
@@ -43,13 +44,27 @@
   (defn test-random-learn [self testdic-nofile]
     (assert (empty? testdic-nofile.random))
     (setv text "Hi, chatbot.")
-    (.learn testdic-nofile text)
+    (.learn-random testdic-nofile text)
     (assert (in text testdic-nofile.random))
-    (.learn testdic-nofile text)
-    (assert (len testdic-nofile.random) 1))
+    (.learn-random testdic-nofile text)
+    (assert (= (len testdic-nofile.random) 1)))
 
   (defn test-pattern-without-dict-file [self testdic-nofile]
     (assert (= testdic-nofile.pattern {})))
 
   (defn test-pattern [self testdic]
-    (assert (= testdic.pattern *TEST-PATTERN*))))
+    (assert (= testdic.pattern *TEST-PATTERN*)))
+
+  (defn test-pattern-learn [self janome-text-1 janome-nouns-1 testdic-nofile]
+    (.learn-pattern testdic-nofile janome-text-1 (analyze janome-text-1))
+    (assert (= (len testdic-nofile.pattern) (len janome-nouns-1)))
+    (for [noun janome-nouns-1]
+      (assert (= (get testdic-nofile.pattern noun) [janome-text-1]))))
+
+  (defn test-pattern-learn-another [self testdic-nofile
+                                    janome-text-1 janome-nouns-1
+                                    janome-text-2 janome-nouns-2]
+    (.learn-pattern testdic-nofile janome-text-1 (analyze janome-text-1))
+    (.learn-pattern testdic-nofile janome-text-2 (analyze janome-text-2))
+    (for [noun janome-nouns-2]
+      (assert (= (get testdic-nofile.pattern noun) [janome-text-1 janome-text-2])))))

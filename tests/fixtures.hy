@@ -12,6 +12,34 @@
                       "こんにちは" ["おはよう" "こんにちは" "こんばんは"]})
 
 (with-decorator (pytest.fixture)
+  (defn janome-text-1 [] "あたしは平和なプログラムの女の子です。"))
+
+(with-decorator (pytest.fixture)
+  (defn janome-text-2 [] "女の子のプログラムで平和なのはあたしです。"))
+
+(with-decorator (pytest.fixture)
+  (defn janome-nouns-1 [] ["あたし" "平和" "プログラム" "女の子"]))
+
+(with-decorator (pytest.fixture)
+  (defn janome-nouns-2 [] ["女の子" "プログラム" "平和" "あたし"]))
+
+(with-decorator (pytest.fixture)
+  (defn janome-tokenized-1 []
+    [(, "あたし"    "名詞,代名詞,一般,*")
+     (, "は"       "助詞,係助詞,*,*")
+     (, "平和"     "名詞,形容動詞語幹,*,*")
+     (, "な"       "助動詞,*,*,*")
+     (, "プログラム" "名詞,サ変接続,*,*")
+     (, "の"       "助詞,連体化,*,*")
+     (, "女の子"    "名詞,一般,*,*")
+     (, "です"     "助動詞,*,*,*")
+     (, "。"       "記号,句点,*,*")]))
+
+(with-decorator (pytest.fixture)
+  (defn janome-nouns-bool-1 []
+    [True False True False True False True False False]))
+
+(with-decorator (pytest.fixture)
   (defn tmp-dicfile [tmp-path]
     (setv directory (/ tmp-path "unmo"))
     (.mkdir directory)
