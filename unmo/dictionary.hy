@@ -26,7 +26,8 @@
         (setv self._pattern (get data "pattern")))))
 
   (defn learn [self text]
-    (self.learn-random text))
+    (self.learn-random text)
+    (self.learn-pattern text (analyze text)))
 
   (defn learn-random [self text]
     (unless (in text self._random)
