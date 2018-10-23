@@ -59,4 +59,12 @@
     (.learn-pattern testdic-nofile janome-text-1 (analyze janome-text-1))
     (assert (= (len testdic-nofile.pattern) (len janome-nouns-1)))
     (for [noun janome-nouns-1]
-      (assert (= (get testdic-nofile.pattern noun) [janome-text-1])))))
+      (assert (= (get testdic-nofile.pattern noun) [janome-text-1]))))
+
+  (defn test-pattern-learn-another [self testdic-nofile
+                                    janome-text-1 janome-nouns-1
+                                    janome-text-2 janome-nouns-2]
+    (.learn-pattern testdic-nofile janome-text-1 (analyze janome-text-1))
+    (.learn-pattern testdic-nofile janome-text-2 (analyze janome-text-2))
+    (for [noun janome-nouns-2]
+      (assert (= (get testdic-nofile.pattern noun) [janome-text-1 janome-text-2])))))
