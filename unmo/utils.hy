@@ -9,6 +9,15 @@
         var-vals  (list (map second values)))
   `((fn [~@var-names] ~@body) ~@var-vals))
 
+(defmacro/g! defn-with-closure [values &rest body]
+  (setv var-names (list (map first  values))
+        var-vals  (list (map second values))
+        fname     (-> (first body) (second)))
+  `(do (defn ~g!closure [~@var-names]
+         ~@body
+         ~fname)
+       (setv ~fname (~g!closure ~@var-vals))))
+
 (defmacro for-with-result [result-bindings bindings &rest body]
   (let ((result        (first  result-bindings))
         (initial-value (second result-bindings)))
