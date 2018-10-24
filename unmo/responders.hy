@@ -1,6 +1,7 @@
 (import [random [choice]]
         re
-        [unmo.exceptions [DictionaryEmpty]])
+        [unmo.exceptions [DictionaryEmpty]]
+        [unmo.morph [noun?]])
 (require [unmo.utils [*]])
 
 (defclass Responder []
@@ -35,3 +36,22 @@
           (setv result (-> (choice responses) (.replace "%match%" (.group it 0))))))
       (except [e IndexError]
         (raise (DictionaryEmpty "パターン辞書が空です。" e))))))
+
+(defclass TemplateResponder [Responder]
+  (defn response [self text parts]
+    (setv nouns (->> (filter (fn [x] (noun? #* x)) parts)
+                     (map first)
+                     (list))
+          counter  (len nouns)
+          key (str counter))
+    (if (and (pos? counter)
+             (in key self._dictionary.template))
+      (let ((template (->> (get self._dictionary.template key)
+                           (choice))))
+        (for [noun nouns]
+          (setv template (.replace template "%noun%" noun 1)))
+        template)
+      (try
+        (choice self._dictionary.random)
+        (except [e IndexError]
+          (raise (DictionaryEmpty "ランダム辞書が空です。" e)))))))
