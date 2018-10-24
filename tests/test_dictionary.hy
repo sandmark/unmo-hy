@@ -10,6 +10,10 @@
   (defn test-empty-template [self testdic-nofile]
     (assert (= testdic-nofile.template {})))
 
+  (defn test-get-value [self testdic janome-template-2]
+    (assert (in janome-template-2
+                (get testdic.template "2"))))
+
   (defn test-learn [self testdic-nofile janome-text-1 janome-nouns-1 janome-template-1]
     (setv parts (analyze janome-text-1)
           index (len janome-nouns-1))

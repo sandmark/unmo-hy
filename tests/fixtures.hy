@@ -3,7 +3,8 @@
         [unmo.bot [Bot]]
         [unmo.responders [WhatResponder
                           RandomResponder
-                          PatternResponder]]
+                          PatternResponder
+                          TemplateResponder]]
         [unmo.dictionary [Dictionary]]
         [unmo.exceptions [DictionaryNotFound]])
 
@@ -42,6 +43,9 @@
 
 (with-decorator (pytest.fixture)
   (defn janome-template-1 [] "%noun%は%noun%な%noun%の%noun%です。"))
+
+(with-decorator (pytest.fixture)
+  (defn janome-template-2 [] "%noun%って%noun%だよね"))
 
 (with-decorator (pytest.fixture)
   (defn tmp-dicfile [tmp-path]
@@ -84,3 +88,7 @@
 (with-decorator (pytest.fixture)
   (defn pattern [testdic]
     (PatternResponder 'pattern testdic)))
+
+(with-decorator (pytest.fixture)
+  (defn template [testdic]
+    (TemplateResponder 'template testdic)))
