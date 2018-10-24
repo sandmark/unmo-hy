@@ -1,4 +1,5 @@
 (import os
+        [pathlib [PurePath]]
         pytest
         [unmo.bot [Bot]]
         [unmo.exceptions [DictionaryNotFound
@@ -12,10 +13,12 @@
       (assert (Bot 'test testdic-nofile.dicfile))))
 
   (defn test-unmo-save [self unmo]
-    (setv filesize (os.path.getsize unmo._dictionary.dicfile))
+    (setv dicfile (PurePath unmo._dictionary.dicfile))
+    (setv initial-dict (with [f (open dicfile :encoding 'utf-8)] (.read f)))
     (.dialogue unmo "Hi, chatbot!")
     (.save unmo)
-    (assert (> (os.path.getsize unmo._dictionary.dicfile) filesize)))
+    (setv expected-dict (with [f (open dicfile :encoding 'utf-8)] (.read f)))
+    (assert (> (len expected-dict) (len initial-dict))))
 
   (defn test-unmo-learn-when-dialogue [self unmo]
     (setv text "Hi, chatbot!")

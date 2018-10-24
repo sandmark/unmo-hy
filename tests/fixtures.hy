@@ -3,13 +3,16 @@
         [unmo.bot [Bot]]
         [unmo.responders [WhatResponder
                           RandomResponder
-                          PatternResponder]]
+                          PatternResponder
+                          TemplateResponder]]
         [unmo.dictionary [Dictionary]]
         [unmo.exceptions [DictionaryNotFound]])
 
-(setv *TEST-RANDOM* ["aaa" "bbb" "ccc"]
-      *TEST-PATTERN* {"チョコ(レート)?" ["%match%おいしいよね"]
-                      "こんにちは" ["おはよう" "こんにちは" "こんばんは"]})
+(setv *TEST-RANDOM*    ["aaa" "bbb" "ccc"]
+      *TEST-PATTERN*   {"チョコ(レート)?" ["%match%おいしいよね"]
+                        "こんにちは" ["おはよう" "こんにちは" "こんばんは"]}
+      *TEST-TEMPLATE*  {2 ["%noun%って%noun%だよね"]
+                        3 ["%noun%は%noun%の%noun%です" "この間%noun%に行ったら%noun%の%noun%に会ったよ"]})
 
 (with-decorator (pytest.fixture)
   (defn janome-text-1 [] "あたしは平和なプログラムの女の子です。"))
@@ -36,8 +39,13 @@
      (, "。"       "記号,句点,*,*")]))
 
 (with-decorator (pytest.fixture)
-  (defn janome-nouns-bool-1 []
-    [True False True False True False True False False]))
+  (defn janome-nouns-bool-1 [] [True False True False True False True False False]))
+
+(with-decorator (pytest.fixture)
+  (defn janome-template-1 [] "%noun%は%noun%な%noun%の%noun%です。"))
+
+(with-decorator (pytest.fixture)
+  (defn janome-template-2 [] "%noun%って%noun%だよね"))
 
 (with-decorator (pytest.fixture)
   (defn tmp-dicfile [tmp-path]
@@ -58,8 +66,9 @@
     (.mkdir d)
     (setv p (/ d "testdic.json"))
 
-    (setv data {"random" *TEST-RANDOM*
-                "pattern" *TEST-PATTERN*})
+    (setv data {"random"   *TEST-RANDOM*
+                "pattern"  *TEST-PATTERN*
+                "template" *TEST-TEMPLATE*})
     (with [f (open p 'w :encoding 'utf-8)]
       (json.dump data f :ensure-ascii False :indent 2))
     (Dictionary p)))
@@ -79,3 +88,7 @@
 (with-decorator (pytest.fixture)
   (defn pattern [testdic]
     (PatternResponder 'pattern testdic)))
+
+(with-decorator (pytest.fixture)
+  (defn template [testdic]
+    (TemplateResponder 'template testdic)))

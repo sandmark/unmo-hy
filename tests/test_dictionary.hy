@@ -6,8 +6,43 @@
         [unmo.morph [analyze]]
         [fixtures [*]])
 
-(defclass TestDictionary []
-  (defn test-save-make-dirs [self tmp-path]
+(defclass TestDictionaryTemplate []
+  (defn test-key-must-be-a-string [self testdic janome-text-1]
+    (setv parts (analyze janome-text-1))
+    (.learn testdic janome-text-1 parts)
+    (assert (in "4" testdic.template))
+    (assert (not (in 4 testdic.template))))
+
+  (defn test-empty-template [self testdic-nofile]
+    (assert (= testdic-nofile.template {})))
+
+  (defn test-learn-only-positive-counter [self testdic]
+    (setv text "はい"
+          parts (analyze text))
+    (.learn-template testdic text parts)
+    (assert (not (in "0" testdic.template))))
+
+  (defn test-get-value [self testdic janome-template-2]
+    (assert (in janome-template-2
+                (get testdic.template "2"))))
+
+  (defn test-learn [self testdic-nofile janome-text-1 janome-nouns-1 janome-template-1]
+    (setv parts (analyze janome-text-1)
+          index (str (len janome-nouns-1)))
+    (.learn-template testdic-nofile janome-text-1 parts)
+    (assert (in index testdic-nofile.template))
+    (assert (= (get testdic-nofile.template index) [janome-template-1])))
+
+  (defn test-learn-duplicated [self testdic-nofile janome-text-1 janome-nouns-1]
+    (setv parts (analyze janome-text-1)
+          index (str (len janome-nouns-1)))
+    (.learn-template testdic-nofile janome-text-1 parts)
+    (setv expected (-> (get testdic-nofile.template index) len))
+    (.learn-template testdic-nofile janome-text-1 parts)
+    (assert (= (-> (get testdic-nofile.template index) len) expected))))
+
+(defclass TestDictionarySave []
+  (defn test-make-dirs [self tmp-path]
     (setv dicfile (/ tmp-path "unmo" "file.json"))
     (try
       (setv dictionary (Dictionary dicfile))
@@ -16,13 +51,14 @@
     (.save dictionary)
     (assert (os.path.exists dicfile)))
 
-  (defn test-save [self testdic-nofile tmp-dicfile]
+  (defn test-write-file [self testdic-nofile tmp-dicfile]
     (try
       (setv dictionary (Dictionary tmp-dicfile))
       (except [e DictionaryNotFound]
         (setv dictionary e.dictionary-instance)))
-    (setv text "Hi, chatbot!")
-    (.learn dictionary text)
+    (setv text "Hi, chatbot!"
+          parts (analyze text))
+    (.learn dictionary text parts)
     (.save dictionary)
     (setv dictionary (Dictionary tmp-dicfile))
     (assert (= (len dictionary.random) 1))
@@ -30,8 +66,9 @@
 
   (defn test-raises-dictionary-file-not-found [self]
     (with [(pytest.raises DictionaryNotFound)]
-      (Dictionary "file-not-exists")))
+      (Dictionary "file-not-exists"))))
 
+(defclass TestRandom []
   (defn test-random-without-dict-file [self testdic-nofile]
     (assert (empty? testdic-nofile.random)))
 
@@ -48,8 +85,9 @@
     (.learn-random testdic-nofile text)
     (assert (in text testdic-nofile.random))
     (.learn-random testdic-nofile text)
-    (assert (= (len testdic-nofile.random) 1)))
+    (assert (= (len testdic-nofile.random) 1))))
 
+(defclass TestPattern []
   (defn test-pattern-without-dict-file [self testdic-nofile]
     (assert (= testdic-nofile.pattern {})))
 
