@@ -48,10 +48,11 @@
   (defn learn-template [self text parts]
     (setv (, template counter) (self.-build-template parts)
           key (str counter))
-    (unless (in key self.template)
-      (assoc self.-template key []))
-    (when (self.-new-template? template counter)
-      (.append (get self.-template key) template)))
+    (when (pos? counter)
+      (unless (in key self.template)
+        (assoc self.-template key []))
+      (when (self.-new-template? template counter)
+        (.append (get self.-template key) template))))
 
   (defn save [self]
     (setv data {"random"   self.random

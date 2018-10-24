@@ -16,6 +16,12 @@
   (defn test-empty-template [self testdic-nofile]
     (assert (= testdic-nofile.template {})))
 
+  (defn test-learn-only-positive-counter [self testdic]
+    (setv text "はい"
+          parts (analyze text))
+    (.learn-template testdic text parts)
+    (assert (not (in "0" testdic.template))))
+
   (defn test-get-value [self testdic janome-template-2]
     (assert (in janome-template-2
                 (get testdic.template "2"))))
