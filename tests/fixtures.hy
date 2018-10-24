@@ -10,8 +10,8 @@
 (setv *TEST-RANDOM*    ["aaa" "bbb" "ccc"]
       *TEST-PATTERN*   {"チョコ(レート)?" ["%match%おいしいよね"]
                         "こんにちは" ["おはよう" "こんにちは" "こんばんは"]}
-      *TEST-TEMPLATE*  {2 ["あたしは%noun%の%noun%です" "%noun%って%noun%だよね"]
-                        3 ["この間%noun%に行ったら%noun%の%noun%に会ったよ"]})
+      *TEST-TEMPLATE*  {2 ["%noun%って%noun%だよね"]
+                        3 ["%noun%は%noun%の%noun%です" "この間%noun%に行ったら%noun%の%noun%に会ったよ"]})
 
 (with-decorator (pytest.fixture)
   (defn janome-text-1 [] "あたしは平和なプログラムの女の子です。"))
