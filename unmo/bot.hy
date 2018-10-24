@@ -5,7 +5,8 @@
         [unmo.dictionary [Dictionary]]
         [unmo.exceptions [DictionaryError
                           DictionaryNotFound
-                          BotDictionaryLoadError]])
+                          BotDictionaryLoadError]]
+        [unmo.morph [analyze]])
 (require [unmo.utils [*]])
 
 (defclass Bot []
@@ -26,13 +27,14 @@
               self._responder (get self._responders :random)))))
 
   (defn dialogue [self text]
-    (setv chance (randrange 0 100))
+    (setv chance (randrange 0 100)
+          parts (analyze text))
     (cond [(in chance (range 0 59))  (setv self._responder (get self._responders :pattern))]
           [(in chance (range 60 89)) (setv self._responder (get self._responders :random))]
           [True                      (setv self._responder (get self._responders :what))])
 
     (try
-      (setv response (.response self._responder text))
+      (setv response (.response self._responder text parts))
       (except [] (raise))
       (finally
         (.learn self._dictionary text)))

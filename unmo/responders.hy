@@ -14,7 +14,7 @@
     (raise NotImplementedError)))
 
 (defclass WhatResponder [Responder]
-  (defn response [self text]
+  (defn response [self text &rest args]
     (-> "{text}ってなに？" (.format :text text))))
 
 (defclass RandomResponder [Responder]
@@ -27,7 +27,7 @@
         (raise (DictionaryEmpty "ランダム辞書が空です。" e))))))
 
 (defclass PatternResponder [Responder]
-  (defn response [self text]
+  (defn response [self text &rest args]
     (try
       (for-with-result [result (choice self._dictionary.random)]
                        [(, ptn responses) (.items self._dictionary.pattern)]
