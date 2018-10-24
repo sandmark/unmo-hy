@@ -38,8 +38,10 @@
      (, "。"       "記号,句点,*,*")]))
 
 (with-decorator (pytest.fixture)
-  (defn janome-nouns-bool-1 []
-    [True False True False True False True False False]))
+  (defn janome-nouns-bool-1 [] [True False True False True False True False False]))
+
+(with-decorator (pytest.fixture)
+  (defn janome-template-1 [] "%noun%は%noun%な%noun%の%noun%です。"))
 
 (with-decorator (pytest.fixture)
   (defn tmp-dicfile [tmp-path]
