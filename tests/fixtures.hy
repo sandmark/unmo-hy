@@ -7,9 +7,11 @@
         [unmo.dictionary [Dictionary]]
         [unmo.exceptions [DictionaryNotFound]])
 
-(setv *TEST-RANDOM* ["aaa" "bbb" "ccc"]
-      *TEST-PATTERN* {"チョコ(レート)?" ["%match%おいしいよね"]
-                      "こんにちは" ["おはよう" "こんにちは" "こんばんは"]})
+(setv *TEST-RANDOM*    ["aaa" "bbb" "ccc"]
+      *TEST-PATTERN*   {"チョコ(レート)?" ["%match%おいしいよね"]
+                        "こんにちは" ["おはよう" "こんにちは" "こんばんは"]}
+      *TEST-TEMPLATE*  {2 ["あたしは%noun%の%noun%です" "%noun%って%noun%だよね"]
+                        3 ["この間%noun%に行ったら%noun%の%noun%に会ったよ"]})
 
 (with-decorator (pytest.fixture)
   (defn janome-text-1 [] "あたしは平和なプログラムの女の子です。"))
@@ -58,8 +60,9 @@
     (.mkdir d)
     (setv p (/ d "testdic.json"))
 
-    (setv data {"random" *TEST-RANDOM*
-                "pattern" *TEST-PATTERN*})
+    (setv data {"random"   *TEST-RANDOM*
+                "pattern"  *TEST-PATTERN*
+                "template" *TEST-TEMPLATE*})
     (with [f (open p 'w :encoding 'utf-8)]
       (json.dump data f :ensure-ascii False :indent 2))
     (Dictionary p)))
