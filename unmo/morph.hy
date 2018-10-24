@@ -1,10 +1,12 @@
 (import re
         [janome.tokenizer [Tokenizer]])
+(require [unmo.utils [*]])
 
-(defn analyze [text]
-  (->> (.tokenize (Tokenizer) text)
-       (map (fn [token] (, token.surface token.part-of-speech)))
-       (list)))
+(defn-with-closure [[tokenizer (Tokenizer)]]
+  (defn analyze [text]
+    (->> (.tokenize tokenizer text)
+         (map (fn [token] (, token.surface token.part-of-speech)))
+         (list))))
 
 (defn noun? [surface part]
   (cond [(= surface "ー") False]
