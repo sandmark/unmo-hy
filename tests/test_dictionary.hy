@@ -8,7 +8,22 @@
 
 (defclass TestDictionaryTemplate []
   (defn test-empty-template [self testdic-nofile]
-    (assert (= testdic-nofile.template {}))))
+    (assert (= testdic-nofile.template {})))
+
+  (defn test-learn [self testdic-nofile janome-text-1 janome-nouns-1 janome-template-1]
+    (setv parts (analyze janome-text-1)
+          index (len janome-nouns-1))
+    (.learn-template testdic-nofile janome-text-1 parts)
+    (assert (in index testdic-nofile.template))
+    (assert (= (get testdic-nofile.template index) [janome-template-1])))
+
+  (defn test-learn-duplicated [self testdic-nofile janome-text-1 janome-nouns-1]
+    (setv parts (analyze janome-text-1)
+          index (len janome-nouns-1))
+    (.learn-template testdic-nofile janome-text-1 parts)
+    (setv expected (-> (get testdic-nofile.template index) len))
+    (.learn-template testdic-nofile janome-text-1 parts)
+    (assert (= (-> (get testdic-nofile.template index) len) expected))))
 
 (defclass TestDictionarySave []
   (defn test-make-dirs [self tmp-path]

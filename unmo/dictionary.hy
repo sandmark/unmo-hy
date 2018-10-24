@@ -29,8 +29,10 @@
         (setv self._template (get data "template")))))
 
   (defn learn [self text]
-    (self.learn-random text)
-    (self.learn-pattern text (analyze text)))
+    (setv parts (analyze text))
+    (self.learn-random   text)
+    (self.learn-pattern  text parts)
+    (self.learn-template text parts))
 
   (defn learn-random [self text]
     (unless (in text self._random)
@@ -44,6 +46,13 @@
           (-> (get self.pattern word) (.append text))
           (assoc self._pattern word [text])))))
 
+  (defn learn-template [self text parts]
+    (setv (, template counter) (self.-build-template parts))
+    (unless (in counter self.template)
+      (assoc self.-template counter []))
+    (when (self.-new-template? template counter)
+      (.append (get self.-template counter) template)))
+
   (defn save [self]
     (setv data {"random"   self.random
                 "pattern"  self.pattern
@@ -53,4 +62,19 @@
       (setv directory path.parent)
       (os.makedirs directory :exist-ok True))
     (with [f (open self.dicfile 'w :encoding 'utf-8)]
-      (json.dump data f :ensure-ascii False :indent 2))))
+      (json.dump data f :ensure-ascii False :indent 2)))
+
+  (defn -build-template [self parts]
+    (setv template ""
+          counter  0)
+    (for [(, word part) parts]
+      (when (noun? word part)
+        (setv word    "%noun%"
+              counter (inc counter)))
+      (setv template (+ template word)))
+    (, template counter))
+
+  (defn -new-template? [self template counter]
+    (setv templates (get self.template counter))
+    (and (pos? counter)
+         (not (in template templates)))))
