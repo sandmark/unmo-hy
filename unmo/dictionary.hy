@@ -46,11 +46,12 @@
           (assoc self._pattern word [text])))))
 
   (defn learn-template [self text parts]
-    (setv (, template counter) (self.-build-template parts))
-    (unless (in counter self.template)
-      (assoc self.-template counter []))
+    (setv (, template counter) (self.-build-template parts)
+          key (str counter))
+    (unless (in key self.template)
+      (assoc self.-template key []))
     (when (self.-new-template? template counter)
-      (.append (get self.-template counter) template)))
+      (.append (get self.-template key) template)))
 
   (defn save [self]
     (setv data {"random"   self.random
@@ -74,6 +75,7 @@
     (, template counter))
 
   (defn -new-template? [self template counter]
-    (setv templates (get self.template counter))
+    (setv key (str counter)
+          templates (get self.template key))
     (and (pos? counter)
          (not (in template templates)))))
