@@ -2,7 +2,7 @@
         json
         [pathlib [PurePath]]
         [unmo.exceptions [DictionaryNotFound]]
-        [unmo.morph [*]])
+        [unmo.morph [noun? re-escape]])
 (require [unmo.utils [*]])
 
 (defclass Dictionary []
@@ -28,8 +28,7 @@
         (setv self._pattern  (get data "pattern"))
         (setv self._template (get data "template")))))
 
-  (defn learn [self text]
-    (setv parts (analyze text))
+  (defn learn [self text parts]
     (self.learn-random   text)
     (self.learn-pattern  text parts)
     (self.learn-template text parts))

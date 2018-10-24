@@ -1,6 +1,7 @@
 (import pytest
         [unmo.responders [Responder]]
         [unmo.exceptions [DictionaryEmpty]]
+        [unmo.morph [analyze]]
         [fixtures [*]])
 
 (defclass Responder []
@@ -47,6 +48,7 @@
                 (get *TEST-PATTERN* "こんにちは"))))
 
   (defn test-response-with-re-literals [self pattern testdic]
-    (setv invalid-pattern "(")
-    (.learn testdic invalid-pattern)
+    (setv invalid-pattern "("
+          parts (analyze invalid-pattern))
+    (.learn testdic invalid-pattern parts)
     (assert (= (.response pattern invalid-pattern) invalid-pattern))))

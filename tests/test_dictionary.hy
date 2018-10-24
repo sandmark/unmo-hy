@@ -40,8 +40,9 @@
       (setv dictionary (Dictionary tmp-dicfile))
       (except [e DictionaryNotFound]
         (setv dictionary e.dictionary-instance)))
-    (setv text "Hi, chatbot!")
-    (.learn dictionary text)
+    (setv text "Hi, chatbot!"
+          parts (analyze text))
+    (.learn dictionary text parts)
     (.save dictionary)
     (setv dictionary (Dictionary tmp-dicfile))
     (assert (= (len dictionary.random) 1))

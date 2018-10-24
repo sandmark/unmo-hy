@@ -37,7 +37,7 @@
       (setv response (.response self._responder text parts))
       (except [] (raise))
       (finally
-        (.learn self._dictionary text)))
+        (.learn self._dictionary text parts)))
     response)
 
   (defn save [self]
