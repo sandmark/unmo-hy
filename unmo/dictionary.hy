@@ -8,9 +8,10 @@
 (defclass Dictionary []
   [default-dicfile "dic/dict.json"]
 
-  (prop random self._random
-        pattern self._pattern
-        dicfile self._dicfile)
+  (prop random   self._random
+        pattern  self._pattern
+        template self._template
+        dicfile  self._dicfile)
 
   (defn --init-- [self &optional filename]
     (setv self._dicfile (if filename filename Dictionary.default-dicfile))
@@ -19,11 +20,13 @@
         (setv data (json.load f)))
       (except [e FileNotFoundError]
         (setv data {"random" []
-                    "pattern" {}})
+                    "pattern" {}
+                    "template" {}})
         (raise (DictionaryNotFound self._dicfile self e)))
       (finally
-        (setv self._random (get data "random"))
-        (setv self._pattern (get data "pattern")))))
+        (setv self._random   (get data "random"))
+        (setv self._pattern  (get data "pattern"))
+        (setv self._template (get data "template")))))
 
   (defn learn [self text]
     (self.learn-random text)
@@ -42,8 +45,9 @@
           (assoc self._pattern word [text])))))
 
   (defn save [self]
-    (setv data {"random"  self.random
-                "pattern" self.pattern})
+    (setv data {"random"   self.random
+                "pattern"  self.pattern
+                "template" self.template})
     (unless (os.path.exists self.dicfile)
       (setv path (PurePath self.dicfile))
       (setv directory path.parent)

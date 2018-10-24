@@ -6,8 +6,12 @@
         [unmo.morph [analyze]]
         [fixtures [*]])
 
-(defclass TestDictionary []
-  (defn test-save-make-dirs [self tmp-path]
+(defclass TestDictionaryTemplate []
+  (defn test-empty-template [self testdic-nofile]
+    (assert (= testdic-nofile.template {}))))
+
+(defclass TestDictionarySave []
+  (defn test-make-dirs [self tmp-path]
     (setv dicfile (/ tmp-path "unmo" "file.json"))
     (try
       (setv dictionary (Dictionary dicfile))
@@ -16,7 +20,7 @@
     (.save dictionary)
     (assert (os.path.exists dicfile)))
 
-  (defn test-save [self testdic-nofile tmp-dicfile]
+  (defn test-write-file [self testdic-nofile tmp-dicfile]
     (try
       (setv dictionary (Dictionary tmp-dicfile))
       (except [e DictionaryNotFound]
@@ -30,8 +34,9 @@
 
   (defn test-raises-dictionary-file-not-found [self]
     (with [(pytest.raises DictionaryNotFound)]
-      (Dictionary "file-not-exists")))
+      (Dictionary "file-not-exists"))))
 
+(defclass TestRandom []
   (defn test-random-without-dict-file [self testdic-nofile]
     (assert (empty? testdic-nofile.random)))
 
@@ -48,8 +53,9 @@
     (.learn-random testdic-nofile text)
     (assert (in text testdic-nofile.random))
     (.learn-random testdic-nofile text)
-    (assert (= (len testdic-nofile.random) 1)))
+    (assert (= (len testdic-nofile.random) 1))))
 
+(defclass TestPattern []
   (defn test-pattern-without-dict-file [self testdic-nofile]
     (assert (= testdic-nofile.pattern {})))
 
