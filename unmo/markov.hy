@@ -1,4 +1,5 @@
 (import [collections [defaultdict]]
+        [random [choice]]
         [unmo.utils [dict-all]])
 (require [unmo.macro [*]])
 
@@ -33,4 +34,21 @@
           (.append it suffix)))
 
   (defn -add-start [self prefix1]
-    (assoc self.-starts prefix1 (inc (get self.-starts prefix1)))))
+    (assoc self.-starts prefix1 (inc (get self.-starts prefix1))))
+
+  (defn generate [self word]
+    (when self._dic
+      (setv prefix1 (if (get self._dic word) word (-> self.-starts (.keys) (list) (choice)))
+            prefix2 (-> (get self._dic prefix1) (.keys) (list) (choice))
+            words   [prefix1 prefix2])
+      (for [_ (range Markov.CHAIN_MAX)]
+        (setv suffix (-> (get self._dic prefix1) (get prefix2) (choice)))
+        (when (self.-end? suffix)
+          (break))
+        (.append words suffix)
+        (setv prefix1 prefix2
+              prefix2 suffix))
+      (.join "" words)))
+
+  (defn -end? [self word]
+    (= word Markov.ENDMARK)))
