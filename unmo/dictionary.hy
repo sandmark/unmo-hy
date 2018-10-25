@@ -37,7 +37,8 @@
   (defn learn [self text parts]
     (self.learn-random   text)
     (self.learn-pattern  text parts)
-    (self.learn-template parts))
+    (self.learn-template parts)
+    (self.learn-markov   parts))
 
   (defn learn-random [self text]
     (unless (in text self._random)
@@ -59,6 +60,9 @@
         (assoc self.-template key []))
       (when (self.-new-template? template counter)
         (.append (get self.-template key) template))))
+
+  (defn learn-markov [self parts]
+    (self.-markov.add-sentence parts))
 
   (defn save [self]
     (setv data {"random"   self.random

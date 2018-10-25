@@ -13,7 +13,15 @@
 
   (defn test-property [self testdic-nofile]
     (assert (in "markov" testdic-nofile.markov-dic))
-    (assert (in "starts" testdic-nofile.markov-dic))))
+    (assert (in "starts" testdic-nofile.markov-dic)))
+
+  (defn test-save [self testdic markov-sentence-1]
+    (setv text (->> markov-sentence-1 (map first) (.join "")))
+    (.learn testdic text markov-sentence-1)
+    (.save testdic)
+    (setv new-dic (Dictionary testdic.dicfile))
+    (assert (in (-> markov-sentence-1 first first)
+                (-> new-dic.markov-dic (get "markov"))))))
 
 (defclass TestDictionaryTemplate []
   (defn test-key-must-be-a-string [self testdic janome-text-1]
