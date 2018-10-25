@@ -60,3 +60,10 @@
           response (.response template text parts))
     (assert (or (= response "君って私だよね")
                 (= response "私って君だよね")))))
+
+(defclass TestMarkovResponder []
+  (defn test-response [self markov-responder testdic]
+    (setv text "私はプログラムの女の子です。"
+          parts (analyze text))
+    (.learn testdic text parts)
+    (assert (in "プログラム" (.response markov-responder text parts)))))

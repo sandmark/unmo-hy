@@ -4,7 +4,8 @@
         [unmo.responders [WhatResponder
                           RandomResponder
                           PatternResponder
-                          TemplateResponder]]
+                          TemplateResponder
+                          MarkovResponder]]
         [unmo.dictionary [Dictionary]]
         [unmo.markov [Markov]]
         [unmo.morph [analyze]]
@@ -120,3 +121,7 @@
 (with-decorator (pytest.fixture)
   (defn template [testdic]
     (TemplateResponder 'template testdic)))
+
+(with-decorator (pytest.fixture)
+  (defn markov-responder [testdic]
+    (MarkovResponder 'markov testdic)))
