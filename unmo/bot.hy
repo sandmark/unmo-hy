@@ -2,7 +2,8 @@
         [unmo.responders [WhatResponder
                           RandomResponder
                           PatternResponder
-                          TemplateResponder]]
+                          TemplateResponder
+                          MarkovResponder]]
         [unmo.dictionary [Dictionary]]
         [unmo.exceptions [DictionaryError
                           DictionaryNotFound
@@ -25,15 +26,16 @@
               self._responders {:what     (WhatResponder     'What     self._dictionary)
                                 :random   (RandomResponder   'Random   self._dictionary)
                                 :pattern  (PatternResponder  'Pattern  self._dictionary)
-                                :template (TemplateResponder 'Template self._dictionary)}
+                                :template (TemplateResponder 'Template self._dictionary)
+                                :markov   (MarkovResponder   'Markov   self._dictionary)}
               self._responder (get self._responders :random)))))
 
   (defn dialogue [self text]
     (setv chance (randrange 0 100)
           parts (analyze text))
-    (cond [(in chance (range 0 39))  (setv self._responder (get self._responders :pattern))]
-          [(in chance (range 40 69)) (setv self._responder (get self._responders :template))]
-          [(in chance (range 70 89)) (setv self._responder (get self._responders :random))]
+    (cond [(in chance (range 0 33))  (setv self._responder (get self._responders :pattern))]
+          [(in chance (range 34 59)) (setv self._responder (get self._responders :template))]
+          [(in chance (range 60 99)) (setv self._responder (get self._responders :markov))]
           [True                      (setv self._responder (get self._responders :what))])
 
     (try
