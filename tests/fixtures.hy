@@ -14,7 +14,8 @@
       *TEST-PATTERN*   {"チョコ(レート)?" ["%match%おいしいよね"]
                         "こんにちは" ["おはよう" "こんにちは" "こんばんは"]}
       *TEST-TEMPLATE*  {2 ["%noun%って%noun%だよね"]
-                        3 ["%noun%は%noun%の%noun%です" "この間%noun%に行ったら%noun%の%noun%に会ったよ"]})
+                        3 ["%noun%は%noun%の%noun%です" "この間%noun%に行ったら%noun%の%noun%に会ったよ"]}
+      *TEST-MARKOV*    {"markov" {} "starts" {}})
 
 (with-decorator (pytest.fixture)
   (defn markov [] (Markov)))
@@ -92,7 +93,8 @@
 
     (setv data {"random"   *TEST-RANDOM*
                 "pattern"  *TEST-PATTERN*
-                "template" *TEST-TEMPLATE*})
+                "template" *TEST-TEMPLATE*
+                "markov"   *TEST-MARKOV*})
     (with [f (open p 'w :encoding 'utf-8)]
       (json.dump data f :ensure-ascii False :indent 2))
     (Dictionary p)))

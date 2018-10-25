@@ -2,16 +2,19 @@
         json
         [pathlib [PurePath]]
         [unmo.exceptions [DictionaryNotFound]]
-        [unmo.morph [noun? re-escape]])
+        [unmo.morph [noun? re-escape]]
+        [unmo.markov [Markov]])
 (require [unmo.macro [*]])
 
 (defclass Dictionary []
   [default-dicfile "dic/dict.json"]
 
-  (prop random   self._random
-        pattern  self._pattern
-        template self._template
-        dicfile  self._dicfile)
+  (prop random          self._random
+        pattern         self._pattern
+        template        self._template
+        markov          self._markov
+        markov-dic      {"markov" self.markov.dic "starts" self.markov.starts}
+        dicfile         self._dicfile)
 
   (defn --init-- [self &optional filename]
     (setv self._dicfile (if filename filename Dictionary.default-dicfile))
@@ -19,14 +22,17 @@
       (with [f (open self._dicfile :encoding 'utf-8)]
         (setv data (json.load f)))
       (except [e FileNotFoundError]
-        (setv data {"random" []
-                    "pattern" {}
-                    "template" {}})
+        (setv data {"random"   []
+                    "pattern"  {}
+                    "template" {}
+                    "markov"   {"markov" {} "starts" {}}})
         (raise (DictionaryNotFound self._dicfile self e)))
       (finally
         (setv self._random   (get data "random"))
         (setv self._pattern  (get data "pattern"))
-        (setv self._template (get data "template")))))
+        (setv self._template (get data "template"))
+        (setv self._markov   (Markov (-> data (get "markov") (get "markov"))
+                                     (-> data (get "markov") (get "starts")))))))
 
   (defn learn [self text parts]
     (self.learn-random   text)
@@ -57,7 +63,8 @@
   (defn save [self]
     (setv data {"random"   self.random
                 "pattern"  self.pattern
-                "template" self.template})
+                "template" self.template
+                "markov"   self.markov-dic})
     (unless (os.path.exists self.dicfile)
       (setv path (PurePath self.dicfile))
       (setv directory path.parent)

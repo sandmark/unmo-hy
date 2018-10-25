@@ -6,6 +6,15 @@
         [unmo.morph [analyze]]
         [fixtures [*]])
 
+(defclass TestDictionaryMarkov []
+  (defn test-empty [self testdic-nofile]
+    (assert (= (type testdic-nofile.markov.dic) dict))
+    (assert (= (type testdic-nofile.markov.starts) dict)))
+
+  (defn test-property [self testdic-nofile]
+    (assert (in "markov" testdic-nofile.markov-dic))
+    (assert (in "starts" testdic-nofile.markov-dic))))
+
 (defclass TestDictionaryTemplate []
   (defn test-key-must-be-a-string [self testdic janome-text-1]
     (setv parts (analyze janome-text-1))
