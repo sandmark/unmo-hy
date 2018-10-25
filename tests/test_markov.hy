@@ -11,4 +11,10 @@
   (defn test-generate [self markov]
     (.add-sentence markov (analyze "ペンのインクは黒"))
     (setv sentence (.generate markov "ペン"))
-    (assert (in "黒" sentence))))
+    (assert (in "黒" sentence)))
+
+  (defn test-load-dictionary [self markov markov-sentence-1 markov-sentence-2 markov-dic]
+    (.add-sentence markov markov-sentence-1)
+    (.add-sentence markov markov-sentence-2)
+    (setv new-markov (Markov markov.dic markov.starts))
+    (assert (= new-markov.dic markov-dic))))

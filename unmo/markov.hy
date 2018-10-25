@@ -7,11 +7,12 @@
   [ENDMARK   "%END%"
    CHAIN_MAX 30]
 
-  (prop dic (dict-all self.-dic))
+  (prop dic    (dict-all self.-dic)
+        starts (dict-all self.-starts))
 
-  (defn --init-- [self]
-    (setv self.-dic (defaultdict (fn [] (defaultdict (fn [] []))))
-          self.-starts (defaultdict (fn [] 0))))
+  (defn --init-- [self &optional [dic {}] [starts {}]]
+    (setv self.-dic (defaultdict (fn [] (defaultdict (fn [] []))) dic)
+          self.-starts (defaultdict (fn [] 0) starts)))
 
   (defn add-sentence [self parts]
     (when (self.-nouns3? parts)
