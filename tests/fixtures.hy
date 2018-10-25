@@ -4,15 +4,41 @@
         [unmo.responders [WhatResponder
                           RandomResponder
                           PatternResponder
-                          TemplateResponder]]
+                          TemplateResponder
+                          MarkovResponder]]
         [unmo.dictionary [Dictionary]]
+        [unmo.markov [Markov]]
+        [unmo.morph [analyze]]
         [unmo.exceptions [DictionaryNotFound]])
 
 (setv *TEST-RANDOM*    ["aaa" "bbb" "ccc"]
       *TEST-PATTERN*   {"チョコ(レート)?" ["%match%おいしいよね"]
                         "こんにちは" ["おはよう" "こんにちは" "こんばんは"]}
       *TEST-TEMPLATE*  {2 ["%noun%って%noun%だよね"]
-                        3 ["%noun%は%noun%の%noun%です" "この間%noun%に行ったら%noun%の%noun%に会ったよ"]})
+                        3 ["%noun%は%noun%の%noun%です" "この間%noun%に行ったら%noun%の%noun%に会ったよ"]}
+      *TEST-MARKOV*    {"markov" {} "starts" {}})
+
+(with-decorator (pytest.fixture)
+  (defn markov [] (Markov)))
+
+(with-decorator (pytest.fixture)
+  (defn markov-sentence-1 [] (analyze "あたしはおしゃべりが好きなプログラムの女の子です")))
+
+(with-decorator (pytest.fixture)
+  (defn markov-sentence-2 [] (analyze "あたしが好きなのはおしゃべりと月餅です")))
+
+(with-decorator (pytest.fixture)
+  (defn markov-dic [] {"あたし" {"は" ["おしゃべり"] "が" ["好き"]}
+                       "は" {"おしゃべり" ["が" "と"]}
+                       "おしゃべり" {"が" ["好き"] "と" ["月餅"]}
+                       "が" {"好き" ["な" "な"]}
+                       "好き" {"な" ["プログラム" "の"]}
+                       "な" {"プログラム" ["の"] "の" ["は"]}
+                       "プログラム" {"の" ["女の子"]}
+                       "の" {"女の子" ["です"] "は" ["おしゃべり"]}
+                       "女の子" {"です" ["%END%"]}
+                       "と" {"月餅" ["です"]}
+                       "月餅" {"です" ["%END%"]}}))
 
 (with-decorator (pytest.fixture)
   (defn janome-text-1 [] "あたしは平和なプログラムの女の子です。"))
@@ -54,11 +80,13 @@
     (/ directory "tmpdic.json")))
 
 (with-decorator (pytest.fixture)
-  (defn testdic-nofile []
+  (defn testdic-nofile [tmp-dicfile]
     (try
-      (Dictionary "with-no-dict-file")
+      (Dictionary tmp-dicfile)
       (except [e DictionaryNotFound]
-        e.dictionary-instance))))
+        e.dictionary-instance)
+      (else
+        (raise)))))
 
 (with-decorator (pytest.fixture)
   (defn testdic [tmp-path]
@@ -68,7 +96,8 @@
 
     (setv data {"random"   *TEST-RANDOM*
                 "pattern"  *TEST-PATTERN*
-                "template" *TEST-TEMPLATE*})
+                "template" *TEST-TEMPLATE*
+                "markov"   *TEST-MARKOV*})
     (with [f (open p 'w :encoding 'utf-8)]
       (json.dump data f :ensure-ascii False :indent 2))
     (Dictionary p)))
@@ -92,3 +121,7 @@
 (with-decorator (pytest.fixture)
   (defn template [testdic]
     (TemplateResponder 'template testdic)))
+
+(with-decorator (pytest.fixture)
+  (defn markov-responder [testdic]
+    (MarkovResponder 'markov testdic)))

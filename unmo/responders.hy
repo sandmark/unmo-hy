@@ -55,3 +55,13 @@
         (choice self._dictionary.random)
         (except [e IndexError]
           (raise (DictionaryEmpty "ランダム辞書が空です。" e)))))))
+
+(defclass MarkovResponder [Responder]
+  (defn response [self _ parts]
+    (setv noun (or (->> parts (filter (fn [x] (noun? #* x))) (first))
+                   "")
+          response (.generate self.-dictionary.markov noun))
+    (try
+      (or response (choice self.-dictionary.random))
+      (except [e IndexError]
+        (raise (DictionaryEmpty "ランダム辞書が空です。" e))))))
