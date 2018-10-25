@@ -2,7 +2,7 @@
         re
         [unmo.exceptions [DictionaryEmpty]]
         [unmo.morph [noun?]])
-(require [unmo.utils [*]])
+(require [unmo.macro [*]])
 
 (defclass Responder []
   (prop name self._name)

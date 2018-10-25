@@ -1,6 +1,6 @@
 (import re
         [janome.tokenizer [Tokenizer]])
-(require [unmo.utils [*]])
+(require [unmo.macro [*]])
 
 (defn-with-closure [[tokenizer (Tokenizer)]]
   (defn analyze [text]

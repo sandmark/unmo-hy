@@ -3,7 +3,7 @@
         [pathlib [PurePath]]
         [unmo.exceptions [DictionaryNotFound]]
         [unmo.morph [noun? re-escape]])
-(require [unmo.utils [*]])
+(require [unmo.macro [*]])
 
 (defclass Dictionary []
   [default-dicfile "dic/dict.json"]

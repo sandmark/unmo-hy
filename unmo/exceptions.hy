@@ -1,4 +1,4 @@
-(require [unmo.utils [*]])
+(require [unmo.macro [*]])
 
 (defclass DictionaryError [Exception])
 (defclass DictionaryNotFound [DictionaryError]

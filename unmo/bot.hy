@@ -8,7 +8,7 @@
                           DictionaryNotFound
                           BotDictionaryLoadError]]
         [unmo.morph [analyze]])
-(require [unmo.utils [*]])
+(require [unmo.macro [*]])
 
 (defclass Bot []
   (prop name self._name
