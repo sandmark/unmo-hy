@@ -37,7 +37,7 @@
   (defn learn [self text parts]
     (self.learn-random   text)
     (self.learn-pattern  text parts)
-    (self.learn-template text parts))
+    (self.learn-template parts))
 
   (defn learn-random [self text]
     (unless (in text self._random)
@@ -51,7 +51,7 @@
           (-> (get self.pattern word) (.append text))
           (assoc self._pattern word [text])))))
 
-  (defn learn-template [self text parts]
+  (defn learn-template [self parts]
     (setv (, template counter) (self.-build-template parts)
           key (str counter))
     (when (pos? counter)

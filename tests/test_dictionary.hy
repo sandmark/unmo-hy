@@ -28,7 +28,7 @@
   (defn test-learn-only-positive-counter [self testdic]
     (setv text "はい"
           parts (analyze text))
-    (.learn-template testdic text parts)
+    (.learn-template testdic parts)
     (assert (not (in "0" testdic.template))))
 
   (defn test-get-value [self testdic janome-template-2]
@@ -38,16 +38,16 @@
   (defn test-learn [self testdic-nofile janome-text-1 janome-nouns-1 janome-template-1]
     (setv parts (analyze janome-text-1)
           index (str (len janome-nouns-1)))
-    (.learn-template testdic-nofile janome-text-1 parts)
+    (.learn-template testdic-nofile parts)
     (assert (in index testdic-nofile.template))
     (assert (= (get testdic-nofile.template index) [janome-template-1])))
 
   (defn test-learn-duplicated [self testdic-nofile janome-text-1 janome-nouns-1]
     (setv parts (analyze janome-text-1)
           index (str (len janome-nouns-1)))
-    (.learn-template testdic-nofile janome-text-1 parts)
+    (.learn-template testdic-nofile parts)
     (setv expected (-> (get testdic-nofile.template index) len))
-    (.learn-template testdic-nofile janome-text-1 parts)
+    (.learn-template testdic-nofile parts)
     (assert (= (-> (get testdic-nofile.template index) len) expected))))
 
 (defclass TestDictionarySave []
