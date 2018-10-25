@@ -1,4 +1,5 @@
 (import [collections [defaultdict]]
+        [copy [copy]]
         [random [choice]]
         [unmo.utils [dict-all]])
 (require [unmo.macro [*]])
@@ -16,8 +17,9 @@
 
   (defn add-sentence [self parts]
     (when (self.-nouns3? parts)
-      (setv prefix1 (-> (first parts)  (first))
-            prefix2 (-> (second parts) (first)))
+      (setv parts (copy parts)
+            prefix1 (-> (.pop parts 0) (first))
+            prefix2 (-> (.pop parts 0) (first)))
       (self.-add-start prefix1)
 
       (for [(, suffix _) parts]
