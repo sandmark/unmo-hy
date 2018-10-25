@@ -32,9 +32,7 @@
     (>= (len parts) 3))
 
   (defn -add-suffix [self prefix1 prefix2 suffix]
-    (as-> (get self.-dic prefix1) it
-          (get it prefix2)
-          (.append it suffix)))
+    (-> self.-dic (get prefix1) (get prefix2) (.append suffix)))
 
   (defn -add-start [self prefix1]
     (assoc self.-starts prefix1 (inc (get self.-starts prefix1))))
