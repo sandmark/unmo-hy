@@ -6,6 +6,8 @@
                           PatternResponder
                           TemplateResponder]]
         [unmo.dictionary [Dictionary]]
+        [unmo.markov [Markov]]
+        [unmo.morph [analyze]]
         [unmo.exceptions [DictionaryNotFound]])
 
 (setv *TEST-RANDOM*    ["aaa" "bbb" "ccc"]
@@ -13,6 +15,28 @@
                         "こんにちは" ["おはよう" "こんにちは" "こんばんは"]}
       *TEST-TEMPLATE*  {2 ["%noun%って%noun%だよね"]
                         3 ["%noun%は%noun%の%noun%です" "この間%noun%に行ったら%noun%の%noun%に会ったよ"]})
+
+(with-decorator (pytest.fixture)
+  (defn markov [] (Markov)))
+
+(with-decorator (pytest.fixture)
+  (defn markov-sentence-1 [] (analyze "あたしはおしゃべりが好きなプログラムの女の子です")))
+
+(with-decorator (pytest.fixture)
+  (defn markov-sentence-2 [] (analyze "あたしが好きなのはおしゃべりと月餅です")))
+
+(with-decorator (pytest.fixture)
+  (defn markov-dic [] {"あたし"    {"は" ["あたし" "おしゃべり"] "が" ["あたし" "好き"]}
+                       "は"       {"あたし" ["は"] "おしゃべり" ["が" "と"]}
+                       "おしゃべり" {"が" ["好き"] "と" ["月餅"]}
+                       "が"       {"好き" ["な" "な"] "あたし" ["が"]}
+                       "好き"     {"な" ["プログラム" "の"]}
+                       "な"       {"プログラム" ["の"] "の" ["は"]}
+                       "プログラム" {"の" ["女の子"]}
+                       "の"       {"女の子" ["です"] "は" ["おしゃべり"]}
+                       "女の子"    {"です" ["%END%"]}
+                       "と"       {"月餅" ["です"]}
+                       "月餅"     {"です" ["%END%"]}}))
 
 (with-decorator (pytest.fixture)
   (defn janome-text-1 [] "あたしは平和なプログラムの女の子です。"))
