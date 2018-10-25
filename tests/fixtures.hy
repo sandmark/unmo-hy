@@ -79,11 +79,13 @@
     (/ directory "tmpdic.json")))
 
 (with-decorator (pytest.fixture)
-  (defn testdic-nofile []
+  (defn testdic-nofile [tmp-dicfile]
     (try
-      (Dictionary "with-no-dict-file")
+      (Dictionary tmp-dicfile)
       (except [e DictionaryNotFound]
-        e.dictionary-instance))))
+        e.dictionary-instance)
+      (else
+        (raise)))))
 
 (with-decorator (pytest.fixture)
   (defn testdic [tmp-path]
